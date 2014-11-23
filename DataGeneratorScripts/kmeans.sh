@@ -10,3 +10,5 @@ k=2
 		echo ********GENERATING $b INPUT POINTS EACH IN $k CLUSTERS 
 		python ./randomclustergen/generaterawdata.py -c $k  -p $b -o input/cluster.csv
 
+        echo ********GENERATING $b DNA STRANDS EACH IN $k CLUSTERS 
+        python ./randomclustergen/generateDnaData.py -c $k -p $b -o input/cluster.csv
