@@ -1,6 +1,6 @@
-package master;
+package participant;
 
-public class Master {
+public class Participant {
 
 	/**
 	 * @param args
@@ -10,6 +10,4 @@ public class Master {
 
 	}
 
-	// Read command line config file
-	// Run seq and parallel forms
 }
