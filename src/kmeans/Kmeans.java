@@ -2,7 +2,7 @@ package kmeans;
 
 import java.util.List;
 
-public class Kmeans <T> {
+public abstract class Kmeans <T> {
 
 	private List<T> pts;
 
@@ -18,9 +18,7 @@ public class Kmeans <T> {
 
 	}
 
-	public boolean updateMeans(newMeanMap) {
-
-	}
+	public boolean updateMeans(newMeanMap);
 
 	public newMeanMap cluster(List<T> means) {
 		// Called by participant
@@ -30,9 +28,7 @@ public class Kmeans <T> {
 
 	}
 
-	private float calcDist(T x, T mean) {
-
-	}
+	private float calcDist(T x, T mean);
 
 	private boolean converged(){
 
