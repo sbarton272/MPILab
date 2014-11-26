@@ -40,7 +40,7 @@ public class ConfigLoader implements DataLoader {
 	private Mean[] means = null;
 	private List<Data> data = null;
 	private DataType dataType = DataType.UNKNOWN;
-	private double termination = .1;
+	private double termination = 2;
 	private File inputFile = null;
 	private File outputFile = null;
 	private final List<ParticipantDetails> participants = new ArrayList<ParticipantDetails>();
@@ -73,7 +73,7 @@ public class ConfigLoader implements DataLoader {
 			break;
 		case STR_KMEANS_TYPE:
 			// Use sequential as default, set parallel only is specified
-			if (val.equals(STR_KMEANS_TYPE_PAR)) {
+			if (val.toLowerCase().equals(STR_KMEANS_TYPE_PAR)) {
 				isParallel = true;
 			}
 			break;

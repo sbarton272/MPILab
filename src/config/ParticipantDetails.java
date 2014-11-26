@@ -22,4 +22,9 @@ public class ParticipantDetails {
 		return hostName;
 	}
 
+	@Override
+	public String toString() {
+		return hostName + ":" + Integer.toString(port);
+	}
+
 }
