@@ -77,7 +77,7 @@ public class DNA implements Data {
 		return BASES[i%BASES.length];
 	}
 
-	protected int length() {
+	public int length() {
 		return dna.length;
 	}
 
