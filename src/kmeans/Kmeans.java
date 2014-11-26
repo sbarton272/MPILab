@@ -2,20 +2,23 @@ package kmeans;
 
 import java.util.List;
 
-public abstract class Kmeans <T> {
+public class Kmeans {
 
-	private List<T> pts;
+	private List<Data> pts;
+	private List<Mean> means;
 
-	public Kmeans(List<T> pts, int k, float convThresh) {
+	public Kmeans(List<Data> pts, int k, float convThresh) {
 
 	}
 
-	public runKMeans() {
-		// Run all
+	public List<Mean> run() {
+		// TODO Run all sequentially
 	}
 
-	public initMeans() {
+	//-----------------------------------------------
 
+	public void initRandMeans() {
+		// TODO
 	}
 
 	public boolean updateMeans(newMeanMap);
