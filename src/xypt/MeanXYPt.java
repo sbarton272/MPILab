@@ -14,10 +14,15 @@ public class MeanXYPt extends XYPt implements Mean {
 
 	public MeanXYPt(double xMin, double xMax, double yMin, double yMax) {
 		super(xMin, xMax, yMin, yMax);
-		// Update running sums on mean location
-		sumX = getX();
-		sumY = getY();
+
+		// Update running sums to selected mean location
+		sumX = x;
+		sumY = y;
 		numPts = 1;
+	}
+
+	public MeanXYPt() {
+		this(0,0,0,0);
 	}
 
 	@Override
@@ -42,7 +47,18 @@ public class MeanXYPt extends XYPt implements Mean {
 	}
 
 	@Override
+	public Mean newMean(List<Data> data) {
+		Mean mean = new MeanXYPt();
+		mean.resetMean(data);
+		return mean;
+	}
+
+	@Override
 	public void resetMean(List<Data> data) {
+
+		if ((data == null) || (data.size() <= 0)) {
+			return;
+		}
 
 		// Restart counts
 		sumX = 0;

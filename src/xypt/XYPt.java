@@ -27,7 +27,7 @@ public class XYPt implements Data {
 	}
 
 	@Override
-	public double getDistance(Data other) {
+	public double distance(Data other) {
 		if (!(other instanceof XYPt)) {
 			return Double.NaN;
 		}
@@ -38,6 +38,13 @@ public class XYPt implements Data {
 		double y = this.y - p2.y;
 
 		return Math.sqrt(x*x + y*y);
+	}
+
+	//---------------------------------------------
+
+	@Override
+	public String toString() {
+		return "<" + Double.toString(x) + "," + Double.toString(y) + ">";
 	}
 
 	public double getX() {

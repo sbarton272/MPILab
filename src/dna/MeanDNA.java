@@ -1,6 +1,5 @@
 package dna;
 
-import java.util.Arrays;
 import java.util.List;
 
 import kmeans.Data;
@@ -18,6 +17,11 @@ public class MeanDNA extends DNA implements Mean {
 	public MeanDNA(int len) {
 		super(len);
 		meanCounts = BaseCount.dna2Count(dna);
+	}
+
+	public MeanDNA(DNA dna) {
+		super(dna.dna);
+		meanCounts = BaseCount.dna2Count(this.dna);
 	}
 
 	//----------------------------------------
@@ -42,8 +46,39 @@ public class MeanDNA extends DNA implements Mean {
 		}
 
 		// Update mean representation based off of counts
-		calculateMean();
+		updateMean();
 
+	}
+
+	private void updateMean() {
+
+		// Update dna with the highest counted base
+		for (int i=0; i < meanCounts.length; i++) {
+			dna[i] = meanCounts[i].getBase();
+		}
+	}
+
+	//----------------------------------------
+
+	@Override
+	public Mean newMean(List<Data> data) {
+		if (data.size() < 1) {
+			return null;
+		}
+
+		// Data must be right type
+		Data d0 = data.get(0);
+		if (!(d0 instanceof DNA)) {
+			return null;
+		}
+
+		// Get size of DNA strands
+		int dnaLen = ((DNA)d0).length();
+		Mean mean = new MeanDNA(dnaLen);
+
+		// Update mean with new data
+		mean.resetMean(data);
+		return mean;
 	}
 
 	@Override
@@ -60,25 +95,23 @@ public class MeanDNA extends DNA implements Mean {
 		}
 	}
 
-	private void calculateMean() {
-
-		// Update dna with the highest counted base
-		for (int i=0; i < meanCounts.length; i++) {
-			dna[i] = meanCounts[i].getBase();
-		}
-	}
-
 }
 
 //---------------------------------------------
 
 class BaseCount {
 
-	private static final int[] START_COUNT = {0,0,0,0};
-	private final int[] counts = START_COUNT;
+	private final int[] counts;
+
+	public BaseCount() {
+		counts = new int[DNA.BASES.length];
+		for(int i=0; i < counts.length; i++) {
+			counts[i] = 0;
+		}
+	}
 
 	public void addBase(char b) {
-		int i = Arrays.asList(DNA.BASES).indexOf(b);
+		int i = new String(DNA.BASES).indexOf(b);
 		if (i >= 0) {
 			counts[i]++;
 		}
@@ -103,6 +136,7 @@ class BaseCount {
 	public static BaseCount[] dna2Count(char[] dna) {
 		BaseCount[] counts = new BaseCount[dna.length];
 		for(int i=0; i < dna.length; i++) {
+			counts[i] = new BaseCount();
 			counts[i].addBase(dna[i]);
 		}
 		return counts;
@@ -110,8 +144,13 @@ class BaseCount {
 
 	public void resetCount() {
 		for(int i=0; i < counts.length; i++) {
-			counts[i] = START_COUNT[i];
+			counts[i] = 0;
 		}
+	}
+
+	@Override
+	public String toString() {
+		return counts.toString();
 	}
 
 }

@@ -14,6 +14,12 @@ public interface Mean extends Data {
 	 * Generate a new mean from the given list of data
 	 * @return
 	 */
+	public Mean newMean(List<Data> data);
+
+	/**
+	 * Reset the mean location using data
+	 * @param data
+	 */
 	public void resetMean(List<Data> data);
 
 }

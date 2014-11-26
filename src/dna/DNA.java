@@ -41,7 +41,7 @@ public class DNA implements Data {
 	 * Distance is the number of different bases
 	 */
 	@Override
-	public double getDistance(Data other) {
+	public double distance(Data other) {
 
 		if (!(other instanceof DNA)) {
 			return Double.NaN;
