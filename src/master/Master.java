@@ -1,15 +1,46 @@
 package master;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Scanner;
+
 public class Master {
 
-	/**
-	 * @param args
-	 */
+	//TODO Read command line config file
+	//TODO Run seq and parallel forms
+	
 	public static void main(String[] args) {
-		// TODO Auto-generated method stub
 
+		// Useful startup messages
+		System.out.println("Welcome to K-Means :)");
+
+		//constantly accept commands from the command line
+		final Scanner scanner = new Scanner(System.in);
+		Thread commandThread = new Thread(new Runnable() {
+			@Override
+			public void run() {
+				int pid = 1;
+
+				System.out.println("Enter a command: ");
+				while (true) {
+					final String command = scanner.nextLine();
+
+					final int threadPid = pid;
+					pid++;
+
+					//handle a given command
+					Thread handleThread = new Thread(new Runnable() {
+						@Override
+						public void run() {
+							//TODO handle command
+						}
+					});
+					handleThread.start();
+				}
+			}
+		});
+		commandThread.start();
 	}
-
-	// Read command line config file
-	// Run seq and parallel forms
+	
 }
