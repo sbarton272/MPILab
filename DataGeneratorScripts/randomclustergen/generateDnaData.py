@@ -2,7 +2,6 @@
 import argparse, random, csv, numpy
 
 BASES = [0,1,2,3]
-PROB_MUTATION = .2
 
 # Helper functions
 def generateDNA(length):
@@ -30,6 +29,8 @@ parser.add_argument('-p', metavar='--pts', type=int,
     help='The number of points per cluster')
 parser.add_argument('-l', metavar='--length', type=int,
 	help='The length of the DNA strands')
+parser.add_argument('-v', metavar='--variance', type=float,
+	help='The variance of the DNA strands')
 parser.add_argument('-o', metavar='--out', type=str,
     help='The output data file (csv)')
 args = parser.parse_args()
@@ -40,7 +41,7 @@ means = [generateDNA(args.l) for _ in xrange(args.c)]
 # Generate points that deviate from means
 points = []
 for m in means:
-	points.extend([m + numpy.random.binomial(1,PROB_MUTATION,len(m)) for _ in xrange(args.p)])
+	points.extend([m + numpy.random.binomial(1,args.v,len(m)) for _ in xrange(args.p)])
 
 DNA = map(ints2DNA, points)
 

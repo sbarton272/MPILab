@@ -31,6 +31,7 @@ public class KmeansRunnable extends Thread implements Runnable {
 
 			// Parallel
 			System.out.println("Parallel");
+			// TODO
 
 		} else {
 
