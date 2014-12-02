@@ -156,17 +156,17 @@ public class ConfigLoader implements DataLoader {
 
 		// Generate correct means
 		if (dataType.equals(DataType.DNA)) {
-			generateDnaMeans();
+			means = generateDnaMeans();
 		} else if (dataType.equals(DataType.PT)) {
-			generateXYPtMeans();
+			means = generateXYPtMeans();
 		}
 
 	}
 
-	private void generateXYPtMeans() {
+	private Mean[] generateXYPtMeans() {
 
 		// Generate new means based on the type
-		means = new Mean[nClusters];
+		Mean[] means = new Mean[nClusters];
 
 		// Find range of data
 		XYPt pt = (XYPt)data.get(0);
@@ -187,12 +187,13 @@ public class ConfigLoader implements DataLoader {
 			means[i] = new MeanXYPt(minX, maxX, minY, maxY);
 		}
 
+		return means;
 	}
 
-	private void generateDnaMeans() {
+	private Mean[] generateDnaMeans() {
 
 		// Generate new means based on the type
-		means = new Mean[nClusters];
+		Mean[] means = new Mean[nClusters];
 
 		// Get length of DNA strands, assume that all are same len
 		int len = ((DNA)data.get(0)).length();
@@ -202,6 +203,7 @@ public class ConfigLoader implements DataLoader {
 			means[i] = new MeanDNA(len);
 		}
 
+		return means;
 	}
 
 	//------------------------------------

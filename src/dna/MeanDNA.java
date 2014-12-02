@@ -50,6 +50,30 @@ public class MeanDNA extends DNA implements Mean {
 
 	}
 
+	@Override
+	public void addMean(Mean m) {
+
+		// Must be same type
+		if (!(m instanceof MeanDNA)) {
+			return;
+		}
+
+		// Must have same length DNA
+		MeanDNA dna = (MeanDNA) m;
+		if (dna.length() != this.length()) {
+			return;
+		}
+
+		// Add to counts
+		for (int i=0; i < meanCounts.length; i++) {
+			meanCounts[i].addCounts(dna.meanCounts[i]);
+		}
+
+		// Update mean representation based off of counts
+		updateMean();
+
+	}
+
 	private void updateMean() {
 
 		// Update dna with the highest counted base
@@ -95,6 +119,21 @@ public class MeanDNA extends DNA implements Mean {
 		}
 	}
 
+	@Override
+	public void resetMean() {
+		// Reset counts
+		for(int i=0; i < meanCounts.length; i++) {
+			meanCounts[i].resetCount();
+		}
+	}
+
+	@Override
+	public Mean newEmpMean() {
+		MeanDNA mean = new MeanDNA(this.length());
+		mean.resetMean();
+		return mean;
+	}
+
 }
 
 //---------------------------------------------
@@ -107,6 +146,13 @@ class BaseCount {
 		counts = new int[DNA.BASES.length];
 		for(int i=0; i < counts.length; i++) {
 			counts[i] = 0;
+		}
+	}
+
+	public void addCounts(BaseCount baseCount) {
+		// Add all counts to base
+		for(int i=0; i < counts.length; i++) {
+			counts[i] += baseCount.counts[i];
 		}
 	}
 

@@ -23,6 +23,11 @@ public class MeanXYPt extends XYPt implements Mean {
 
 	public MeanXYPt() {
 		this(0,0,0,0);
+
+		// Empty mean
+		sumX = 0;
+		sumY = 0;
+		numPts = 0;
 	}
 
 	@Override
@@ -40,10 +45,25 @@ public class MeanXYPt extends XYPt implements Mean {
 		sumY += pt.y;
 		numPts += 1;
 
-		// Update underlying mean
-		x = sumX / numPts;
-		y = sumY / numPts;
+		updateMean();
 
+	}
+
+	@Override
+	public void addMean(Mean m) {
+		// Must be same type
+		if (!(m instanceof XYPt)) {
+			return;
+		}
+
+		MeanXYPt mPt = (MeanXYPt)m;
+
+		// Update count and X, Y
+		sumX += mPt.sumX;
+		sumY += mPt.sumY;
+		numPts += mPt.numPts;
+
+		updateMean();
 	}
 
 	@Override
@@ -51,6 +71,22 @@ public class MeanXYPt extends XYPt implements Mean {
 		Mean mean = new MeanXYPt();
 		mean.resetMean(data);
 		return mean;
+	}
+
+
+	@Override
+	public Mean newEmpMean() {
+		Mean m = new MeanXYPt();
+		m.resetMean();
+		return m;
+	}
+
+	@Override
+	public void resetMean() {
+		// Restart counts
+		sumX = 0;
+		sumY = 0;
+		numPts = 0;
 	}
 
 	@Override
@@ -80,7 +116,15 @@ public class MeanXYPt extends XYPt implements Mean {
 			numPts += 1;
 		}
 
-		// Update underlying mean
+		updateMean();
+
+	}
+
+	private void updateMean() {
+		// Don't update empty mean
+		if (numPts <= 0) {
+			return;
+		}
 		x = sumX / numPts;
 		y = sumY / numPts;
 	}
