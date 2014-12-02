@@ -6,15 +6,15 @@ public class Kmeans implements SeqKmeans, MasterKmeans, ParticipantKmeans {
 
 	private final List<Data> pts;
 	private Mean[] means;
-	private final float convThresh;
+	private final double convThresh;
 
-	public Kmeans(List<Data> pts, Mean[] means, float convThresh) {
+	public Kmeans(List<Data> pts, Mean[] means, double convThresh) {
 		this.pts = pts;
 		this.means = means;
 		this.convThresh = convThresh;
 	}
 
-	public Kmeans(List<Data> pts, float convThresh) {
+	public Kmeans(List<Data> pts, double convThresh) {
 		this.pts = pts;
 		this.convThresh = convThresh;
 	}
@@ -64,6 +64,7 @@ public class Kmeans implements SeqKmeans, MasterKmeans, ParticipantKmeans {
 
 	//-----------------------------------------------
 
+	@Override
 	public Mean[] calcNewMeans(Mean[] curMeans) {
 
 		// Generate new empty means
