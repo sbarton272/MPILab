@@ -1,11 +1,9 @@
 package master;
 
+import java.io.IOException;
 import java.util.Scanner;
 
 public class Master {
-
-	//TODO Read command line config file
-	//TODO Run seq and parallel forms
 
 	public static void main(String[] args) {
 
@@ -14,42 +12,67 @@ public class Master {
 
 		//constantly accept commands from the command line
 		final Scanner scanner = new Scanner(System.in);
-		Thread commandThread = new comLineParser(scanner);
+		Thread commandThread = new ComLineParser(scanner);
 		commandThread.start();
 	}
 
 }
 
-//-------------------------------------------------------
+//-----------------------------------------------------------
 
-class comLineParser extends Thread {
+class ComLineParser extends Thread implements Runnable {
+
+	final static String PROMPT = "Enter a command: ";
+	final static String HELP_MSG = "Available Commands:\n" +
+			"run <config file>";
+	final static String RUN_CMD = "run";
+	final static String DELIM = " ";
 
 	final Scanner scanner;
 
-	public comLineParser(final Scanner scanner) {
+	public ComLineParser(final Scanner scanner) {
 		this.scanner = scanner;
 	}
 
 	@Override
 	public void run() {
-		int pid = 1;
+		int pid = 0;
 
-		System.out.println("Enter a command: ");
 		while (true) {
-			final String command = scanner.nextLine();
+			System.out.println(PROMPT);
 
-			final int threadPid = pid;
-			pid++;
+			final String cmd = scanner.nextLine();
 
-			//handle a given command
-			Thread handleThread = new Thread(new Runnable() {
-				@Override
-				public void run() {
-					//TODO handle command
+			// Run command
+			String[] split = cmd.split(DELIM);
+			if ((split.length == 2) && (split[0].equals(RUN_CMD))) {
+
+				// Valid run command so spawn process to run
+				String configFile = split[1];
+
+				// Run KMeans
+				pid++;
+				Thread runKMeans;
+				try {
+					runKMeans = new KmeansRunnable(pid, configFile);
+
+					System.out.println("[" + Integer.toString(pid) + "] Running k means on " + configFile);
+
+					runKMeans.start();
+
+				} catch (IOException e) {
+
+					System.out.println("Invalid config file");
+					e.printStackTrace();
 				}
-			});
-			handleThread.start();
+
+			} else {
+
+				// Invalid input
+				System.out.println(HELP_MSG);
+			}
 		}
 	}
 
 }
+
