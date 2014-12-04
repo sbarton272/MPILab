@@ -21,8 +21,6 @@ public interface ConfigLoader {
 
 	public File getOutputFile();
 
-	public List<ParticipantDetails> getParticipants();
-
 	public HashMap<String,String> getUserConfig();
 
 }

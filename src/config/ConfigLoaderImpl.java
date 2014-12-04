@@ -28,8 +28,6 @@ public class ConfigLoaderImpl implements DataLoader, ConfigLoader {
 	private final String STR_TERM = "TEMINATION";
 	private final String STR_INPUT_FILE = "INPUT_FILE";
 	private final String STR_OUTPUT_FILE = "OUTPUT_FILE";
-	private final String STR_PARTICIPANT = "PARTICIPANT";
-	private final String STR_PORT_DELIM = ":";
 	private final String STR_KEY_DELIM = "=";
 	private final String STR_CSV_DELIM = ",";
 
@@ -43,7 +41,6 @@ public class ConfigLoaderImpl implements DataLoader, ConfigLoader {
 	private double termination = 2;
 	private File inputFile = null;
 	private File outputFile = null;
-	private final List<ParticipantDetails> participants = new ArrayList<ParticipantDetails>();
 	private final HashMap<String,String> userConfig = new HashMap<String,String>();
 
 	public ConfigLoaderImpl(String filePath) throws IOException {
@@ -65,7 +62,6 @@ public class ConfigLoaderImpl implements DataLoader, ConfigLoader {
 	//------------------------------------
 
 	private void setKeyVal(String key, String val) throws IOException {
-		String[] hostPort;
 
 		switch(key) {
 		case STR_JOB_NAME:
@@ -100,10 +96,6 @@ public class ConfigLoaderImpl implements DataLoader, ConfigLoader {
 			break;
 		case STR_OUTPUT_FILE:
 			outputFile = new File(val);
-			break;
-		case STR_PARTICIPANT:
-			hostPort = split2(val, STR_PORT_DELIM);
-			participants.add(new ParticipantDetails(hostPort[0], hostPort[1]));
 			break;
 		default:
 			// Store all unrecognized keys to a list of KV pairs
@@ -208,14 +200,17 @@ public class ConfigLoaderImpl implements DataLoader, ConfigLoader {
 
 	//------------------------------------
 
+	@Override
 	public String getJobname() {
 		return jobname;
 	}
 
+	@Override
 	public boolean getIsParallel() {
 		return isParallel;
 	}
 
+	@Override
 	public Mean[] getMeans() {
 		return means;
 	}
@@ -225,6 +220,7 @@ public class ConfigLoaderImpl implements DataLoader, ConfigLoader {
 		return data;
 	}
 
+	@Override
 	public double getTermination() {
 		return termination;
 	}
@@ -233,14 +229,12 @@ public class ConfigLoaderImpl implements DataLoader, ConfigLoader {
 		return inputFile;
 	}
 
+	@Override
 	public File getOutputFile() {
 		return outputFile;
 	}
 
-	public List<ParticipantDetails> getParticipants() {
-		return participants;
-	}
-
+	@Override
 	public HashMap<String,String> getUserConfig() {
 		return userConfig;
 	}
