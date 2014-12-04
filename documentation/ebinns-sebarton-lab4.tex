@@ -9,6 +9,7 @@
 \documentclass[12pt]{article}
 
 \usepackage{graphicx}
+\usepackage{enumitem}
 \usepackage[compact]{titlesec}
 \usepackage[letterpaper, portrait, margin=1in]{geometry}
 \usepackage{amsmath, amsfonts, amsthm, amssymb}
@@ -110,28 +111,28 @@ Iterate on the new mean generation process until the means converge
 
 The parallel algorithm is effectively the same except that the organizing of data points by nearest mean is a distributed process. Workers calculate new intermediate means based upon the data that they have and then send these means back to the master. The master combines all of these intermediate means and checks for convergence.
 
-\begin{enumerate}
+\begin{enumerate}[leftmargin=*,align=left] 
 
 \item
-[Master] Init random means
+\textbf{Master} Init random means
 
 \item
-[Master] Partition data out to the participants
+\textbf{Master} Partition data out to the participants
 
 \item
-[Master] Send current means to participants
+\textbf{Master} Send current means to participants
 
 \item
-[Participant] For all data organize by nearest mean
+\textbf{Participant} For all data organize by nearest mean
 
 \item
-[Participant] For all means generate a new mean with the closest data points per mean
+\textbf{Participant} For all means generate a new mean with the closest data points per mean
 
 \item
-[Participant] Send these intermediate means back to the master
+\textbf{Participant} Send these intermediate means back to the master
 
 \item
-[Master] Combine intermediate means and check for convergence. If not converged, send these new means out the the participants and repeat the above steps.
+\textbf{Master} Combine intermediate means and check for convergence. If not converged, send these new means out the the participants and repeat the above steps.
 
 \end{enumerate}
 
