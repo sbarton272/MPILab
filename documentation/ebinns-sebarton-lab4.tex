@@ -63,32 +63,84 @@ Most of the configuration file parameters are self-explanatory:
 \ttt{OUTPUT\_FILE=<filePath>}
 
 \item
-\ttt{KMEANS\_TYPE=<Sequential|Parallel>}
+\ttt{KMEANS\_TYPE=<Sequential|Parallel>} We run k-means either in parallel or sequential mode. If parallel mode is specified then the algorithm runs across the specified participants, otherwise it runs just on the master.
 
 \item
-\ttt{N\_CLUSTERS=<int>}
+\ttt{N\_CLUSTERS=<int>} This specifies the number of clusters to search for. This is a design parameter and should be selected based off of your intuition.
 
 \item
-\ttt{DATA\_TYPE=<DNA|XYPt>}
+\ttt{DATA\_TYPE=<DNA|XY>} Our k-means currently supports two data types, \ttt{DNA} and \ttt{XY} points. Please specify which you will be using.
 
 \item
-\ttt{TEMINATION=<float>}
+\ttt{TEMINATION=<float>} The algorithm iterates until the means converge within the this termination threshold. This should be a positive number.
 
 \end{itemize}
 
 \subsection{Data Generation}
+In the \ttt{DataGeneratorScripts} directory there is are two python scripts to generate data for testing. Each has a simply command line interface that can be determined by running the respective scripts. The script \ttt{generaterawdata.py} generates \ttt{XY} points and \ttt{generateDnaData.py} generates \ttt{DNA} data.
 
 \subsection{Running Provided Examples}
 
-To run the provided examples follow the above steps and use the provided config files. Make sure to modify the participants and number of participants as necessary. Take a look at the provided code for examples of how to write the map and reduce functions.
+To run the provided examples follow the above steps and use the provided configuration files. Take a look in each config file to see what parameters are utilized. These configuration files make use of the data in the \ttt{test} directory.
 
 %------------------------------------------
-\section{Project Requirements}
 
-\subsection{Requirements Met and Capabilities}
+\section{K-Means Implementation}
 
-\subsection{Requirements Not Met and Limitations}
+\subsection{Sequential}
+The sequential algorithm works as specified in the handout:
 
-\subsection{Improvements}
+\begin{enumerate}
+
+\item
+Init random means
+
+\item
+For all data organize by nearest mean
+
+\item
+For all means generate a new mean with the closest data points per mean
+
+\item
+Iterate on the new mean generation process until the means converge
+
+\end{enumerate}
+
+\subsection{Parallel}
+
+The parallel algorithm is effectively the same except that the organizing of data points by nearest mean is a distributed process. Workers calculate new intermediate means based upon the data that they have and then send these means back to the master. The master combines all of these intermediate means and checks for convergence.
+
+\begin{enumerate}
+
+\item
+[Master] Init random means
+
+\item
+[Master] Partition data out to the participants
+
+\item
+[Master] Send current means to participants
+
+\item
+[Participant] For all data organize by nearest mean
+
+\item
+[Participant] For all means generate a new mean with the closest data points per mean
+
+\item
+[Participant] Send these intermediate means back to the master
+
+\item
+[Master] Combine intermediate means and check for convergence. If not converged, send these new means out the the participants and repeat the above steps.
+
+\end{enumerate}
+
+Intermediate means are specific to the data involved. For \ttt{XYPt} objects the mean representation is a sum of the x components and a sum of the y components along with a element count such that the mean itself is \ttt{<sumX/numPts, sumY/numPts}. \ttt{sumX}, \ttt{sumY} and \ttt{numPts} can all be updated as new points are added. For \ttt{DNA} the mean representation is a count of the bases for each base in the dna strand. For example if the strand is \ttt{AGGT} the mean representation could be \ttt{<[3,0,0,1],[1,2,1,0],[1,2,0,1],[1,1,2,0]>} where each array represents the counts of \ttt{[A,G,T,C]}. As new dna strands are added to the mean these counts can be iterated appropriately.
+
+%------------------------------------------
+
+\section{Experimentation and Analysis}
+
+TODO - multiple num processes over different data set sizes
 
 \end{document}
