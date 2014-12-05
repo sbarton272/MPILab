@@ -1,9 +1,11 @@
 package kmeans;
 
+import java.io.Serializable;
 import java.util.List;
 
-public class Kmeans implements SeqKmeans, MasterKmeans, ParticipantKmeans {
+public class Kmeans implements SeqKmeans, MasterKmeans, ParticipantKmeans, Serializable {
 
+	private static final long serialVersionUID = 1L;
 	private final List<Data> pts;
 	private Mean[] means;
 	private final double convThresh;

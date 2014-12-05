@@ -1,5 +1,6 @@
 package dna;
 
+import java.io.Serializable;
 import java.util.List;
 
 import kmeans.Data;
@@ -138,8 +139,9 @@ public class MeanDNA extends DNA implements Mean {
 
 //---------------------------------------------
 
-class BaseCount {
+class BaseCount implements Serializable{
 
+	private static final long serialVersionUID = 1L;
 	private final int[] counts;
 
 	public BaseCount() {
